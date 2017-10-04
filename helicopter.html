@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Arda Ungun</title>
+
+	<!-- general stylesheet -->
+	<link rel="stylesheet" href="https://unpkg.com/tachyons@4.8.1/css/tachyons.min.css"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1"/>
+
+	<style media="screen">
+
+
+    .fullheight {
+        height: 100vh;
+    }
+
+	</style>
+</head>
+<body class="bg-near-black h-100 w-100">
+    <div class="bg-green fullheight">
+        <div class="bg-red justify-start" id="topzone">top</div>
+        <div class="bg-yellow self-end h-90" id="safezone">safezone</div>
+        <div class="bg-blue self-end " id="bottomzone">bottom</div>
+    </div>
+
+<script type="text/javascript">
+
+    let zones = ["top", "safezone", "bottom"];
+    var elements = [];
+
+    for (var i = 0; i < zones.length; i++) {
+        elements[i] = document.getElementById(zones[i])
+    }
+
+    var topzone = document.getElementById('topzone');
+    var safezone = document.getElementById('safezone');
+    var bottomzone = document.getElementById('bottomzone');
+
+
+    var safezoneparams = {
+        'center': 60,
+        'width': 80,
+    }
+
+    // ensure that center and width are reasonable
+    if (safezoneparams.width > 50) safezoneparams.width = 50;
+    if (safezoneparams.width < 10) safezoneparams.width = 10;
+    if (safezoneparams.center > 99) safezoneparams.center = 99;
+    if (safezoneparams.center < 1) safezoneparams.center = 1;
+
+    
+
+
+    var topheight = 100 - (safezoneparams.center + safezoneparams.width/2);
+    var bottomheight = safezoneparams.center -  safezoneparams.width/2;
+
+    topzone.style.height = topheight + "vh"
+    safezone.style.height = safezoneparams.width + "vh"
+    bottomzone.style.height = bottomheight + "vh"
+
+
+    </script>
+
+</body>
+</html>
