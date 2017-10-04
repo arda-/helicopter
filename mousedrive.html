@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html style="overflow:hidden;">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Arda Ungun</title>
+
+	<!-- general stylesheet -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1"/>
+
+	<style media="screen">
+
+
+
+    .fullheight {
+        height: 100vh;
+    }
+
+	.safe {
+		text-align: center;
+		height: 10fr;
+		position: relative;
+	}
+
+	.bg-ddd { background-color: #ddd; }
+	.bg-dark-red { background-color: maroon; }
+
+	#playzone :hover {
+		background-color: blue;
+	}
+
+
+	</style>
+</head>
+<body class="bg-ddd" style="margin:0; padding:0;" id="">
+    <div id="playzone" class="bg-dark-red" onmouseout="test()"></div>
+
+<script type="text/javascript">
+
+	function test() {
+		console.log("test");
+	}
+
+	var playzone = document.getElementById('playzone');
+
+	var center = Math.random()*50 + 25;
+	var width = 110;
+	var swing = width/3;
+
+	var direction = coinToss();
+
+	function coinToss() { return Math.pow(-1, Math.floor(Math.random()*2)) }
+
+
+
+	function gaussianRand() {
+		var rand = 0;
+		let tightness = 7;
+		for (var i = 0; i < tightness; i += 1) {
+			rand += Math.random();
+		}
+
+		return rand / tightness;
+	}
+
+	var points = 0;
+
+
+	function addSafeBlock() {
+
+		center = (gaussianRand()*swing*2 - swing)  + center;
+
+		if (center < 10) {
+			center = gaussianRand()*swing*.75 + center;
+		}
+		if (center > 90 ) {
+			center = center - gaussianRand()*swing*.75;
+		}
+
+
+		let left = center - width/2;
+
+		let layerHTML = '<div class="safe bg-ddd" style="'
+		layerHTML += 'width:' + width + '%;'
+		layerHTML += 'left:' + left + '%;'
+		layerHTML += '"></div>'
+
+		playzone.insertAdjacentHTML('afterbegin', layerHTML);
+
+		// clean up children from the bottom.
+		if (playzone.clientHeight > 20 + window.innerHeight) {
+			playzone.removeChild(playzone.lastElementChild)
+		}
+
+		points += 1;
+		return 0;
+	}
+
+	var blockInterval = window.setInterval(addSafeBlock, 12);
+	var stopTimer = window.setInterval(stopRunning, 20000);
+
+
+	function stopRunning() {
+		stopBlocks()
+		stopSubtractingWidth()
+		console.log(points);
+	}
+
+	function stopBlocks() { clearInterval(blockInterval); }
+
+	var widthInterval = window.setInterval(reduceWidth, 100);
+	function stopSubtractingWidth() { clearInterval(widthInterval); }
+
+	function reduceWidth() {
+		width = width * .995;
+		swing = width/3;
+		if (width < 1) stopRunning();
+	}
+
+
+    </script>
+
+</body>
+</html>
